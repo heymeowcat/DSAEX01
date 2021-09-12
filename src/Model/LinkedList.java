@@ -5,101 +5,113 @@
  */
 package Model;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author heymeowcat
  */
 public class LinkedList<T> {
 
-    private Node<T> first;
-    private Node<T> last;
+    private Node<T> head;
+    private Node<T> tail;
     private int count;
-
-    public LinkedList() {
-        Node<T> newLiked = new Node<T>();
-        this.first = newLiked;
-        this.last = this.first;
-    }
-
-    private class Node<T> {
-
-        private T data;
-        private Node<T> next;
-
-        public Node() {
-            this.data = null;
-            this.next = null;
-        }
-
-        public Node(T obj) {
-            this.data = obj;
-            this.next = null;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
-
-        public Node<T> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<T> next) {
-            this.next = next;
-        }
-
-    }
+    private String isEmpty;
 
     //add
     public void add(T data) {
         Node<T> newData = new Node<T>(data);
-        if (this.first.getData() == null) {
-            this.first = newData;
-            this.last = this.first;
+        if (this.head == null) {
+            head = newData;
+            tail = newData;
         } else {
-            this.last.setNext(newData);
-            this.last = newData;
+            tail.n = newData;
+            tail = newData;
         }
         count++;
     }
 
-    //remove
-    public void remove(T data) {
-        Node<T> current = first;
-        if (this.first.getData().equals(data)) {
-            if (this.first.getNext() == null) {
-                Node<T> newNode = new Node<T>();
-                this.first.setData(null);
-                this.first = newNode;
-                this.last = this.first;
-            } else {
-                this.first.setData(null);
-                this.first = this.first.getNext();
-            }
-        } else {
-            boolean wasDeleted = false;
-            while (!wasDeleted) {
-                Node<T> currentNext = current.getNext();
-                if (currentNext.getData().equals(data)) {
-                    currentNext.setData(null);
-                    current.setNext(currentNext.getNext());
-                    currentNext = null;
-                    wasDeleted = true;
-                    count--;
-                } else {
-                    current = current.getNext();
-                }
-            }
+    //get
+    public Node get(int position) {
+        Node c = head;
+        for (int x = 1; x < position; x++) {
+            c = c.n;
         }
+        return c;
+    }
+
+    //remove
+    public void remove(int position) {
+
+        // If linked list is empty
+        if (head == null) {
+            return;
+        }
+
+        // Store head node
+        Node temp = head;
+
+        // If head needs to be removed
+        if (position == 0) {
+            head = temp.n;   // Change head
+            count--;
+            return;
+        }
+
+        // Find previous node of the node to be deleted
+        for (int i = 0; temp != null && i < position - 1; i++) {
+            temp = temp.n;
+        }
+
+        // If position is more than number of nodes
+        if (temp == null || temp.n == null) {
+            return;
+        }
+
+        // Node temp->next is the node to be deleted
+        // Store pointer to the next of node to be deleted
+        Node next = temp.n.n;
+
+        temp.n = next;  // Unlink the deleted node from list
+
+        count--;
     }
 
     //count
     public int getCount() {
         return count;
+    }
+
+    //isEmpty
+    public String isEmpty() {
+        if (head == null) {
+            isEmpty = "Yes";
+        } else {
+            isEmpty = "No";
+        }
+        return isEmpty;
+    }
+
+    //view
+    public void view(DefaultTableModel model) {
+        model.setRowCount(0);
+        Node<Users> c = (Node<Users>) head;
+        while (c != null) {
+            System.out.println(c.data);
+
+            int assignid = c.data.getId();
+            String assignname = c.data.getName();
+            int assignage = c.data.getAge();
+            int assignphone = c.data.getContactNo();
+            String assignemail = c.data.getEmail();
+
+            Object[] row = {assignid, assignname, assignage, assignphone, assignemail};
+
+            model.addRow(row);
+
+            c = c.n;
+        }
     }
 
 }
