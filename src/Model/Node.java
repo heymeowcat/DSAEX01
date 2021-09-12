@@ -12,7 +12,7 @@ package Model;
 public class Node<T> {
 
     T data;
-    Node n;
+    Node next;
 
     public Node(T data) {
         this.data = data;

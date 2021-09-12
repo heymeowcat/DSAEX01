@@ -222,17 +222,30 @@ public class Main extends javax.swing.JFrame {
         Users newUsers = new Users(Integer.parseInt(idTextField.getText()), nameTextField.getText(), Integer.parseInt(ageTextField.getText()), Integer.parseInt(phoneTextField.getText()), emailTextField.getText());
         userLinkedList.add(newUsers);
         userLinkedList.view(model);
-        sizeLabel.setText("Size : " + userLinkedList.getCount());
-        isEmptyLabel.setText("Is Empty : " + userLinkedList.isEmpty());
+        updateHeader();
+        clearTextFields();
     }//GEN-LAST:event_addUserBtnActionPerformed
 
     private void RemoveUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveUserBtnActionPerformed
         int row = userTable.getSelectedRow();
         userLinkedList.remove(row);
         userLinkedList.view(model);
+        updateHeader();
+        clearTextFields();
+    }//GEN-LAST:event_RemoveUserBtnActionPerformed
+
+    private void updateHeader() {
         sizeLabel.setText("Size : " + userLinkedList.getCount());
         isEmptyLabel.setText("Is Empty : " + userLinkedList.isEmpty());
-    }//GEN-LAST:event_RemoveUserBtnActionPerformed
+    }
+
+    private void clearTextFields() {
+        idTextField.setText(null);
+        nameTextField.setText(null);
+        emailTextField.setText(null);
+        phoneTextField.setText(null);
+        ageTextField.setText(null);
+    }
 
     /**
      * @param args the command line arguments

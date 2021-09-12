@@ -14,31 +14,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LinkedList<T> {
 
+    //head and tail of singly linked list
     private Node<T> head;
     private Node<T> tail;
+    
     private int count;
     private String isEmpty;
 
     //add
     public void add(T data) {
+        //Create a new node with passed data
         Node<T> newData = new Node<T>(data);
+        
+        //check if list is empty
         if (this.head == null) {
+            //if list is empty; head and tail will assign new node
             head = newData;
             tail = newData;
         } else {
-            tail.n = newData;
+            //else add as last element
+            tail.next = newData;
             tail = newData;
         }
+   
         count++;
-    }
-
-    //get
-    public Node get(int position) {
-        Node c = head;
-        for (int x = 1; x < position; x++) {
-            c = c.n;
-        }
-        return c;
     }
 
     //remove
@@ -54,26 +53,29 @@ public class LinkedList<T> {
 
         // If head needs to be removed
         if (position == 0) {
-            head = temp.n;   // Change head
+            //assigns null if temp pointer is empty
+            head = temp.next;  
+           
             count--;
             return;
         }
 
-        // Find previous node of the node to be deleted
+        // find previous node of the node to be deleted
         for (int i = 0; temp != null && i < position - 1; i++) {
-            temp = temp.n;
+            temp = temp.next;
         }
 
         // If position is more than number of nodes
-        if (temp == null || temp.n == null) {
+        if (temp == null || temp.next == null) {
             return;
         }
 
         // Node temp->next is the node to be deleted
         // Store pointer to the next of node to be deleted
-        Node next = temp.n.n;
+        Node tn = temp.next.next;
 
-        temp.n = next;  // Unlink the deleted node from list
+        // Unlink the deleted node from list
+        temp.next = tn;  
 
         count--;
     }
@@ -95,20 +97,23 @@ public class LinkedList<T> {
 
     //view
     public void view(DefaultTableModel model) {
+        //remove all rows from table
         model.setRowCount(0);
-        Node<Users> c = (Node<Users>) head;
-        while (c != null) {
-            int assignid = c.data.getId();
-            String assignname = c.data.getName();
-            int assignage = c.data.getAge();
-            int assignphone = c.data.getContactNo();
-            String assignemail = c.data.getEmail();
-
+        //current will point to head
+        Node<Users> current = (Node<Users>) head;
+        while (current != null) {
+           
+            int assignid = current.data.getId();
+            String assignname = current.data.getName();
+            int assignage = current.data.getAge();
+            int assignphone = current.data.getContactNo();
+            String assignemail = current.data.getEmail();
+         
             Object[] row = {assignid, assignname, assignage, assignphone, assignemail};
-
+            //adding data to table
             model.addRow(row);
-
-            c = c.n;
+            //assigning next pointer to current
+            current = current.next;
         }
     }
 
