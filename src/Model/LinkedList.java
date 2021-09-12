@@ -98,8 +98,6 @@ public class LinkedList<T> {
         model.setRowCount(0);
         Node<Users> c = (Node<Users>) head;
         while (c != null) {
-            System.out.println(c.data);
-
             int assignid = c.data.getId();
             String assignname = c.data.getName();
             int assignage = c.data.getAge();
